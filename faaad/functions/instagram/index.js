@@ -12,7 +12,7 @@ export const handler = ({ inputs, mechanic, sketch }) => {
   };
 
   const escalarImagenFondo = () => {
-    // Dibuja la imagen centrada si existe
+    // dibuja la imagen centrada si existe
     if (img) {
       const imgW = img.width;
       const imgH = img.height;
@@ -71,7 +71,7 @@ export const handler = ({ inputs, mechanic, sketch }) => {
     }
   };
 
-  // Carga la imagen antes de setup si existe
+  // carga la imagen antes de setup si existe
   sketch.preload = () => {
     if (imagenInput) {
       img = sketch.loadImage(URL.createObjectURL(imagenInput));
@@ -91,6 +91,12 @@ export const handler = ({ inputs, mechanic, sketch }) => {
     sketch.fill(colores.udpNegro);
 
     escalarImagenFondo();
+
+    sketch.noStroke();
+    // usa el rojo de faaad-colores
+    sketch.fill(colores.faadOscuroRojo); 
+    // barra superior
+    sketch.rect(0, 0, inputs.ancho, 55); 
 
     if (inputs.mostrarGrilla) {
       sketch.stroke(200);
@@ -113,7 +119,7 @@ export const handler = ({ inputs, mechanic, sketch }) => {
         sketch.line(0, y, inputs.ancho, y);
       }
 
-      // Resalta el margen de la grilla
+      // resalta el margen de la grilla
       sketch.stroke("#393939ff");
       sketch.strokeWeight(4);
       sketch.noFill();
@@ -122,7 +128,7 @@ export const handler = ({ inputs, mechanic, sketch }) => {
       sketch.noStroke();
     }
 
-    // Configura el tamaño y estilo del texto
+    // configura el tamaño y estilo del texto
     sketch.textSize(210);
     sketch.textStyle(sketch.BOLD);
     sketch.textFont("Helvetica");
@@ -132,13 +138,34 @@ export const handler = ({ inputs, mechanic, sketch }) => {
     const margen = 62;
     sketch.text(inputs.Titulo, margen + 10, margen + 26);
 
+    // dibuja el texto "Escuela" rotado 90 grados en el margen derecho superior de la grilla
+    sketch.push();
+    sketch.textSize(48);
+    sketch.textStyle(sketch.NORMAL);
+    sketch.textFont("Helvetica");
+    sketch.textAlign(sketch.LEFT, sketch.TOP);
+    sketch.fill(colores.udpNegro);
+
     const gridWidth = inputs.ancho - margen * 2;
     const x = margen + gridWidth;
     const y = margen + 35;
 
+    sketch.translate(x, y);
+    sketch.rotate(Math.PI / 2);
+    sketch.text(inputs.Escuela, 0, 0);
+    sketch.pop();
+
+    // dibuja el texto "InfoExtra" dentro del margen inferior izquierdo de la grilla
+    sketch.textSize(40);
+    sketch.textStyle(sketch.NORMAL);
+    sketch.textFont("Helvetica");
+    sketch.textAlign(sketch.LEFT, sketch.TOP);
+    sketch.fill(colores.udpNegro);
+
     const gridHeight = inputs.altura - margen * 2;
     const infoX = margen;
-    const infoY = margen + gridHeight - 40; // 40 es el tamaño del texto
+    // 40 es el tamaño del texto
+    const infoY = margen + gridHeight - 40; 
 
     mechanic.done();
   };
